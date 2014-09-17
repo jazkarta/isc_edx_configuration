@@ -1,0 +1,29 @@
+---
+
+# play for setting up, configuring and deploying edx to a single aws instance
+
+- name: Provision Instance
+  hosts: localhost
+  gather_facts: False
+  vars:
+    ansible_python_interpreter: /Users/cewing/virtualenvs/isc/bin/python
+  roles:
+    - role: launch_ec2
+      region: us-west-2
+      name_tag: test
+      elb:
+      keypair: pk-cpe
+      security_group: vpc-ssh-access
+      instance_type: m3.medium
+      ami: ami-cfa1e6ff
+      vpc_subnet_id: subnet-29b9a46f
+      region: us-west-2
+      instance_tags: '{"Name":"test", "foo":"bar"}'
+      root_ebs_size: 20
+      zone: us-west-2c
+      instance_profile_name:
+      terminate_instance: true
+
+  post_tasks:
+    - name: Debug results of provisioning
+      debug: var=groups
