@@ -8,7 +8,7 @@
   vars:
     ansible_python_interpreter: /Users/cewing/virtualenvs/isc/bin/python
   roles:
-    - role: launch_ec2
+    - role: launch_isc_ec2
       region: us-west-2
       name_tag: test
       elb:
@@ -18,7 +18,7 @@
       ami: ami-cfa1e6ff
       vpc_subnet_id: subnet-29b9a46f
       region: us-west-2
-      instance_tags: '{"Name":"test", "foo":"bar"}'
+      instance_tags: '{"Name":"isc_demo"}'
       root_ebs_size: 20
       zone: us-west-2c
       instance_profile_name:
