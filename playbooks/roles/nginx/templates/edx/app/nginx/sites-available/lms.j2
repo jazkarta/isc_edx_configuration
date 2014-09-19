@@ -73,6 +73,11 @@ server {
     try_files $uri @proxy_to_lms_app;
   }
 
+  # No basic auth for LTI grade handler, so that LTI providers can use it
+  location ~ /grade_handler$ {
+    try_files $uri @proxy_to_lms_app;
+  }
+
   location /courses {
     {%- if EDXAPP_ENABLE_RATE_LIMITING -%}
     # Set Limit  
