@@ -12,6 +12,9 @@
 
   post_tasks:
     - name: Wrap up
-      debug: msg="Your server is now ready to build edx."
-    - debug: msg="Please ssh to poo and run the following commands"
-    - debug: msg="$ cd {{prep_isc_ec2_bootstrap_dir}}\n$ sudo ansible-playbook -c local ./isc_edx_sandbox.yml -i \"localhost,\" -e \"edx_ansible_source_repo={{edx_ansible_source_repo}} configuration_version={{configuration_version}} edx_platform_repo={{edx_platform_repo}} edx_platform_version={{edx_platform_version}}\""
+      debug: msg={{item}}
+      with_items:
+        - Your server is now ready to build edx.
+        - Please ssh to {{inventory_hostname}} and run the following commands
+        - $ cd {{prep_isc_ec2_bootstrap_dir}}/playbooks
+        - $ sudo ansible-playbook -c local ./isc_edx_sandbox.yml -i "localhost," -e "edx_ansible_source_repo={{edx_ansible_source_repo}} configuration_version={{configuration_version}} edx_platform_repo={{edx_platform_repo}} edx_platform_version={{edx_platform_version}}"
