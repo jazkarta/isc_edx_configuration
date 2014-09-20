@@ -1,0 +1,14 @@
+---
+prep_isc_ec2_root_dir: /var/tmp
+prep_isc_ec2_bootstrap_dir: "{{prep_isc_ec2_root_dir}}/configuration"
+prep_isc_ec2_packages:
+  - build-essential
+  - software-properties-common
+  - python-software-properties
+  - curl
+  - git-core
+  - libxml2-dev
+  - libxslt1-dev
+  - python-pip
+  - python-apt
+  - python-dev
