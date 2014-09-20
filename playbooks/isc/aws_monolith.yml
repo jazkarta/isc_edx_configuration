@@ -1,0 +1,12 @@
+---
+
+# play for setting up, configuring and deploying edx to a single aws instance
+- include: aws_provision_instance.yml
+  vars:
+    instance_name_tag: customization_tests
+- include: aws_prep_instance.yml
+  vars:
+    edx_ansible_source_repo: https://github.com/jazkarta/isc_edx_configuration.git
+    configuration_version: master
+    edx_platform_repo: https://github.com/jazkarta/edx-platform.git
+    edx_platform_version: isc
