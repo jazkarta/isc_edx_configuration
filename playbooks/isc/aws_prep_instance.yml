@@ -9,10 +9,11 @@
   gather_facts: True
   roles:
     - role: prep_isc_ec2
+    - role: customize_isc_ec2
 
   post_tasks:
     - name: Wrap up
-      debug: msg={{item}}
+      debug: msg="{{item}}"
       with_items:
         - Your server is now ready to build edx.
         - Please ssh to {{inventory_hostname}} and run the following commands
