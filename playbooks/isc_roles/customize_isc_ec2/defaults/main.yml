@@ -1,0 +1,2 @@
+customize_isc_ec2_source_path: ../../../ISC/
+customize_isc_ec2_dest_path: /var/tmp/customizations

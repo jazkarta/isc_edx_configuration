@@ -1,0 +1,13 @@
+---
+# Move customizations required to build isc edx up to the server so they can be
+# used in the build process
+
+- name: make target directory on server
+  file: path={{customize_isc_ec2_dest_path}} state=directory
+
+# note that this requires the ISC repository to be locally available 
+# at the path specified by customize_isc_ec2_source_path
+- name: rsync required directories from ISC repository
+  synchronize: >
+    src={{customize_isc_ec2_source_path}} dest={{customize_isc_ec2_dest_path}}
+    rsync_timeout=60
