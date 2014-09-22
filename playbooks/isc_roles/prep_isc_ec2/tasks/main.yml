@@ -2,7 +2,8 @@
 # prepares a fresh ec2 ubuntu 12.04 instance for EdX installation
 
 - name: Update apt-get package list
-  apt: update_cache=yes
+  apt: update_cache=yes, cache_valid_time=86400
+  ignore_errors: yes
 
 - name: Upgrade apt-get
   apt: upgrade=yes
@@ -17,7 +18,7 @@
     - virtualenv
 
 - name: Clone configuration repository
-  git: repo=https://github.com/jazkarta/isc_edx_configuration.git version=master dest={{prep_isc_ec2_bootstrap_dir}}
+  git: repo=https://github.com/jazkarta/isc_edx_configuration.git version=isc_release dest={{prep_isc_ec2_bootstrap_dir}}
 
 - name: Install configuration requirements
   pip: requirements={{prep_isc_ec2_bootstrap_dir}}/requirements.txt
