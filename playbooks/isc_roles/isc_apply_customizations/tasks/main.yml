@@ -1,0 +1,9 @@
+---
+# move customizations into place in preparations for building isc via ansible
+
+- name: Copy isc theme into place
+  copy: src=/var/tmp/customizations/themes/isc dest={{edxapp_theme_dir}}/isc
+
+- name: Copy isc microsites into place
+  copy: src=/var/tmp/customizations/microsites dest={{EDXAPP_MICROSITE_ROOT_DIR}}
+
