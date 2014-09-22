@@ -7,6 +7,6 @@
 - include: aws_prep_instance.yml
   vars:
     edx_ansible_source_repo: https://github.com/jazkarta/isc_edx_configuration.git
-    configuration_version: master
+    configuration_version: isc_release
     edx_platform_repo: https://github.com/jazkarta/edx-platform.git
     edx_platform_version: isc
