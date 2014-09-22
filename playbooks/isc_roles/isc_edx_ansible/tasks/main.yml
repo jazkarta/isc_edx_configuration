@@ -41,6 +41,9 @@
     - "{{ edx_ansible_data_dir }}"
     - "{{ edx_ansible_venvs_dir }}"
 
+- name: copy customized server-vars file into place
+  copy: src={{edx_ansible_var_src}} dest={{edx_ansible_var_file}}
+
 - name: install a bunch of system packages on which edx_ansible relies
   apt: pkg={{','.join(edx_ansible_debian_pkgs)}} state=present
 

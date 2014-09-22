@@ -42,3 +42,4 @@ edx_ansible_requirements_file: "{{ edx_ansible_code_dir }}/requirements.txt"
 # edX configuration repo
 configuration_version: release
 edx_ansible_var_file: "{{ edx_ansible_app_dir }}/server-vars.yml"
+edx_ansible_var_src: /var/tmp/customizations/ansible/server-vars.yml
