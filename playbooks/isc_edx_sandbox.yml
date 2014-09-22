@@ -41,7 +41,7 @@
     - { role: "xqueue", update_users: True }
     - ora
     - certs
-    - edx_ansible
+    - isc_edx_ansible
     - role: datadog
       when: COMMON_ENABLE_DATADOG
     - role: splunkforwarder
