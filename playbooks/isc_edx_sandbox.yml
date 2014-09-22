@@ -31,8 +31,8 @@
     - edxlocal
     - mongo
     - role: 'edxapp'
-      celery_worker: True }
-      custom_requirements_file: /var/tmp/customizations/requirements/custom_requirements.txt}
+      celery_worker: True
+      custom_requirements_file: /var/tmp/customizations/requirements/custom_requirements.txt
     - role: isc_apply_customizations
     - demo
     - { role: 'rabbitmq', rabbitmq_ip: '127.0.0.1' }
