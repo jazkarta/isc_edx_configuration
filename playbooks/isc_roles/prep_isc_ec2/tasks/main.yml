@@ -18,7 +18,7 @@
     - virtualenv
 
 - name: Clone configuration repository
-  git: repo=https://github.com/jazkarta/isc_edx_configuration.git version=isc_release dest={{prep_isc_ec2_bootstrap_dir}}
+  git: repo={{edx_ansible_source_repo}} version={{configuration_version}} dest={{prep_isc_ec2_bootstrap_dir}}
 
 - name: Install configuration requirements
   pip: requirements={{prep_isc_ec2_bootstrap_dir}}/requirements.txt
