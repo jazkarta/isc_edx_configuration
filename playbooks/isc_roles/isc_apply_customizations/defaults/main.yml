@@ -1,0 +1,4 @@
+isc_apply_customizations_source_root: /var/tmp/customizations
+isc_apply_customizations_theme_root: "{{isc_apply_customizations_source_root}}/themes"
+isc_apply_customizations_microsites_root: "{{isc_apply_customizations_source_root}}/microsites"
+

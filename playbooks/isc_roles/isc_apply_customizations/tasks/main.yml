@@ -1,9 +1,8 @@
 ---
-# move customizations into place in preparations for building isc via ansible
-
-- name: Copy isc theme into place
-  copy: src=/var/tmp/customizations/themes/isc dest={{edxapp_theme_dir}}/isc
 
 - name: Copy isc microsites into place
-  copy: src=/var/tmp/customizations/microsites dest={{EDXAPP_MICROSITE_ROOT_DIR}}
-
+  copy: src={{isc_apply_customizations_microsites_root}}/{{item}} dest={{EDXAPP_MICROSITE_ROOT_DIR}}/{{item}} owner=edxapp group=www-data
+  with_items:
+    - gloucestershire
+    - learn
+    - northshore
