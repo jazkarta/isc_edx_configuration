@@ -77,6 +77,10 @@
   register: inst
   sudo_user: "{{ edxapp_user }}"
 
+- name: Debug new and inst
+  debug: var=new
+- debug: var=inst
+
 # Substitute github mirror in all requirements files
 # This is run on every single deploy
 - name: Updating requirement files for git mirror
@@ -203,6 +207,11 @@
 - stat: path="{{ custom_requirements_file }}"
   register: custom_requirements
   sudo_user: "{{ edxapp_user }}"
+
+- name: Debug new, inst, and custom
+  debug: var=new
+- debug: var=inst
+- debug: var=custom_requirements
 
 - name : install python custom-requirements
   pip: >
