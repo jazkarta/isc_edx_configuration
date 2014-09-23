@@ -1,7 +1,7 @@
 ---
 
 - name: Copy isc microsites into place
-  copy: src={{isc_apply_customizations_microsites_root}}/{{item}} dest={{EDXAPP_MICROSITE_ROOT_DIR}}/{{item}} owner=edxapp group=www-data
+  copy: src={{isc_apply_customizations_microsites_root}}/{{item}} dest={{EDXAPP_MICROSITE_ROOT_DIR}} owner=edxapp group=www-data
   with_items:
     - gloucestershire
     - learn
