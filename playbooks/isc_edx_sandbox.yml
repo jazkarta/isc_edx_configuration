@@ -30,8 +30,8 @@
       - lms
     - edxlocal
     - mongo
+    - { role: 'edxapp', celery_worker: True }
     - role: 'edxapp'
-      celery_worker: True
       custom_requirements_file: /var/tmp/customizations/requirements/custom_requirements.txt
     - role: isc_apply_customizations
     - demo
