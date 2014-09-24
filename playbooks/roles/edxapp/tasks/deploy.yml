@@ -48,6 +48,9 @@
   - "restart edxapp"
   - "restart edxapp_workers"
 
+- name: Check the value of the theme name for debugging
+  debug: var=edxapp_theme_name
+
 - name: checkout theme
   git: >
     dest={{ edxapp_app_dir }}/themes/{{edxapp_theme_name}}
