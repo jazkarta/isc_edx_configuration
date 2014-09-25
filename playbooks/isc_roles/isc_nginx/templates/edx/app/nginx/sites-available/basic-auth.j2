@@ -1,0 +1,8 @@
+{% if COMMON_ENABLE_BASIC_AUTH %}
+
+     auth_basic            "Restricted";
+     auth_basic_user_file  {{ nginx_htpasswd_file }};
+
+     index index.html
+     proxy_set_header X-Forwarded-Proto https;
+{% endif %}
