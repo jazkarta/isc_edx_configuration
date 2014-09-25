@@ -44,6 +44,7 @@ nginx_default_sites: []
 nginx_debian_pkgs:
   - nginx
   - python-passlib
+  - ssl-cert
 
 CMS_HOSTNAME: '~^((stage|prod)-)?studio.*'
 
