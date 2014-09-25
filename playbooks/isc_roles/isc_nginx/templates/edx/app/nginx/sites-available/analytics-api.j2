@@ -7,23 +7,20 @@ upstream analytics_api_app_server {
 server {
   listen {{ ANALYTICS_API_NGINX_PORT }} default_server;
 
-  {% include "basic-auth.j2" %}
-
   location ~ ^/static/(?P<file>.*) {
     root {{ COMMON_DATA_DIR }}/{{ analytics_api_service_name }};
     try_files /staticfiles/$file =404;
+    {% include "basic-auth.j2" %}
   }
 
   location / {
     try_files $uri @proxy_to_app;
+    {% include "basic-auth.j2" %}
   }
 
   # No basic auth security on the heartbeat url, so that ELB can use it
   location /api/v0/status {
     try_files $uri @proxy_to_app;
-    {% if COMMON_ENABLE_BASIC_AUTH %}
-     auth_basic off;
-    {% endif %}
   }
 
   {% include "robots.j2" %}

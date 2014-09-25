@@ -27,8 +27,6 @@ server {
   listen {{EDXAPP_LMS_NGINX_PORT}} {{default_site}};
   {% endif %}
 
-  {% include "basic-auth.j2" %}
-
   access_log {{ nginx_log_dir }}/access.log;
   error_log {{ nginx_log_dir }}/error.log error;
 
@@ -57,31 +55,23 @@ server {
 
   location / {
     try_files $uri @proxy_to_lms_app;
+    {% include "basic-auth.j2" %}
   }
 
   # No basic auth security on the github_service_hook url, so that github can use it for cms
   location /github_service_hook {
     try_files $uri @proxy_to_lms_app;
-    {% if COMMON_ENABLE_BASIC_AUTH %}
-     auth_basic off;
-    {% endif %}
 
   }
 
   # No basic auth security on the heartbeat url, so that ELB can use it
   location /heartbeat {
     try_files $uri @proxy_to_lms_app;
-    {% if COMMON_ENABLE_BASIC_AUTH %}
-     auth_basic off;
-    {% endif %}
   }
 
   # No basic auth for LTI grade handler, so that LTI providers can use it
   location ~ /grade_handler$ {
     try_files $uri @proxy_to_lms_app;
-    {% if COMMON_ENABLE_BASIC_AUTH %}
-     auth_basic off;
-    {% endif %}
   }
 
   {% include "robots.j2" %}

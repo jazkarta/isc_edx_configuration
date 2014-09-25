@@ -17,10 +17,9 @@ upstream xserver_app_server {
 server {
   listen {{ XSERVER_NGINX_PORT }} default_server;
 
-  {% include "basic-auth.j2" %}
-
   location / {
     try_files $uri @proxy_to_app;
+    {% include "basic-auth.j2" %}
   }
 
 

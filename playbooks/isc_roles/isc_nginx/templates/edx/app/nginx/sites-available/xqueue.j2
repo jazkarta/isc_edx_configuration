@@ -7,18 +7,14 @@ upstream xqueue_app_server {
 server {
   listen {{ XQUEUE_NGINX_PORT }} default_server;
 
-  {% include "basic-auth.j2" %}
-
   location / {
     try_files $uri @proxy_to_app;
+    {% include "basic-auth.j2" %}
   }
 
   # No basic auth security on the heartbeat url, so that ELB can use it
   location /xqueue/status/{
     try_files $uri @proxy_to_app;
-    {% if COMMON_ENABLE_BASIC_AUTH %}
-     auth_basic off;
-    {% endif %}
   }
 
   {% include "robots.j2" %}

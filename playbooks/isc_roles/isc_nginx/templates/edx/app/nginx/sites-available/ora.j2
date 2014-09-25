@@ -7,14 +7,15 @@ upstream app_server {
 server {
   listen {{ ORA_NGINX_PORT }} default_server;
 
-  {% include "basic-auth.j2" %}
-
   location / {
     try_files $uri @proxy_to_app;
+    {% include "basic-auth.j2" %}
   }
 
   # Check security on this
   location /static/ {
+    {% include "basic-auth.j2" %}
+
     alias /opt/wwc/staticfiles/;
 
     # return a 403 for static files that shouldn't be
