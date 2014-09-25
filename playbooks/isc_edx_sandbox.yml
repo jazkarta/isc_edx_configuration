@@ -9,6 +9,8 @@
   sudo: True
   gather_facts: True
   vars:
+    COMMON_ENABLE_BASIC_AUTH: True
+    COMMON_HTPASSWD_USER: isc
     migrate_db: "yes"
     openid_workaround: True
     EDXAPP_LMS_NGINX_PORT: '80'
@@ -23,7 +25,7 @@
     COMMON_ENABLE_DATADOG: False
     COMMON_ENABLE_SPLUNKFORWARDER: False
   roles:
-    - role: nginx
+    - role: isc_nginx
       nginx_sites:
       - cms
       - lms
