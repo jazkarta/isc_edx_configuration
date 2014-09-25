@@ -16,3 +16,5 @@ vagrant_ansible_inventory_default
 .AppleDouble
 :2e_*
 :2e#
+
+private*
