@@ -3,7 +3,6 @@
 # patch for shellshock: CVE-2014-6271
 
 - name: Copy apt sources list (if needed)
-  gather_facts: yes
   copy: src=debian-6-lts.list dest=/etc/apt/sources.list.d/debian-6-lts.list
   when: ansible_distribution_major_version == "6"
 
