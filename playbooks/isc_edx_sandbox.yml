@@ -13,7 +13,6 @@
     COMMON_HTPASSWD_USER: isc
     migrate_db: "yes"
     openid_workaround: True
-    EDXAPP_LMS_NGINX_PORT: '80'
     edx_platform_version: 'master'
     edxapp_use_custom_theme: true  # false to disable & use std. theme
     edxapp_theme_name: "isc"
@@ -26,6 +25,11 @@
     COMMON_ENABLE_SPLUNKFORWARDER: False
     NGINX_ROBOT_RULES:
       - {agent: "*", disallow: "/"}
+    EDXAPP_LMS_NGINX_PORT: 80
+    EDXAPP_LMS_SSL_NGINX_PORT: 443
+    EDXAPP_LMS_PREVIEW_NGINX_PORT: 18000
+    EDXAPP_CMS_NGINX_PORT: 18010
+    EDXAPP_CMS_SSL_NGINX_PORT: 48010
   roles:
     - role: isc_nginx
       nginx_sites:
