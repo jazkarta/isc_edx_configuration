@@ -80,7 +80,7 @@ instance, you may do so by providing an alternative value for
 `instance_name_tag`:
 
 ```
-$ ansible-playbook isc/aws_monolith.yml -e "instance_name_tag: some_other_name"
+$ ansible-playbook isc/aws_monolith.yml -e "instance_name_tag=some_other_name"
 ```
 
 The default value for `instance_name_tag` is "isc_staging"
