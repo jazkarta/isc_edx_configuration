@@ -11,6 +11,8 @@
       Name: "{{ name_tag }}"
   register: tag_lookup
 
+- debug: var=tag_lookup
+
 - name: checking for other instances
   debug: msg="Too many results returned, not terminating!"
   when: terminate_instance == true and tag_lookup.instance_ids|length > 1
@@ -41,7 +43,7 @@
     instance_type: "{{ instance_type }}"
     image: "{{ ami }}"
     vpc_subnet_id: "{{ vpc_subnet_id }}"
-    assign_public_ip: yes
+    assign_public_ip: "{{ assign_public_ip }}"
     wait: true
     region: "{{ region }}"
     instance_tags: "{{instance_tags}}"
