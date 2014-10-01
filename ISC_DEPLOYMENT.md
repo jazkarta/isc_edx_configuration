@@ -7,20 +7,28 @@ single-instance edx sandbox to AWS with all ISC customizations.
 
 ### Install Ansible and dependencies
 
-You will need to install [ansible](http://docs.ansible.com/intro_installation.html#getting-ansible)
-and [boto](http://boto.readthedocs.org/en/latest/) globally.  Ansible does not
-work well with virtualenv.
+This project uses
+[ansible](http://docs.ansible.com/intro_installation.html#getting-ansible) and
+the AWS management modules defined in that package.  Those modules depend on
+[boto](http://boto.readthedocs.org/en/latest/) to connect to and manage EC2
+resources. You will need to install both packages and their dependencies:
 
 ```
 $ sudo pip install paramiko PyYAML jinja2 httplib2 ansible boto
 ```
 
+Although it may be possible to work with both packages installed in a
+virtualenv, this is **not reliable** and is discouraged.  It is best to install
+into your global python (as unpleasant as that may be).
+
 ### Set Up boto access
 
 In order for boto to work with AWS resources, it must have an access key id and
-a secret access key.  AWS strongly urges that you set up an [IAM user]() with
-all required privileges to do this.  Once the user is created, you'll need to
-put the two values into a place where boto can read them.
+a secret access key.  AWS strongly urges that you set up an
+[IAM user](http://docs.aws.amazon.com/IAM/latest/UserGuide/Using_SettingUpUser.html)
+with all required privileges to do this.  Once the user is created, you'll need
+to [create access credentials](http://docs.aws.amazon.com/IAM/latest/UserGuide/ManagingCredentials.html).
+Download the credentials and then put them where `boto` will be able to find them.
 
 Create a file in your home directory called `.boto` and enter the following
 information, inserting the values for your IAM user:
@@ -30,6 +38,29 @@ information, inserting the values for your IAM user:
 aws_access_key_id = <access_key_id>
 aws_secret_access_key = <secret_access_key>
 ```
+
+If you have multiple AWS accounts, you can create
+[profiles](http://boto.readthedocs.org/en/latest/boto_config_tut.html#credentials)
+to manage credentials for each separately.  For example, in `~/.boto`:
+
+```ini
+[profile isc]
+aws_access_key_id = <access_key_for_isc_iam_user>
+aws_secret_access_key = <secret_key_for_isc_iam_user>
+
+[profile other_acct]
+...
+
+[Credentials]
+aws_access_key_id = <default_access_key_id>
+aws_secret_access_key = <default_secret_key>
+```
+
+If you do this, you may pass the `profile` extra variable (`-e`) when calling
+`ansible-playbook` as described below.  If the profile you name is not present,
+boto will fall back to the default credentials supplied in the `[Credentials]`
+section.
+
 **WARNING!!**
 
 On occasion, ansible will fail to find this file.  If you suddenly find
@@ -38,6 +69,8 @@ the equivalent environment variables in your shell: `AWS_ACCESS_KEY_ID` and
 `AWS_SECRET_ACCESS_KEY`.  Ansible documentation insists that these variable
 names are flexible and offers several alternatives, however I have not found
 other names to work correctly.
+
+
 
 ### Set Up working environment
 
@@ -59,11 +92,14 @@ isc
 └── isc_edx_configuration
 ```
 
-Finally, change directories into the configuration repository playbooks
-directory:
+Change directories into the configuration repository, check out the isc_release
+branch and then move into the playbooks directory:
 
 ```
-$ cd isc_edx_configuration/playbooks
+$ cd isc_edx_configuration
+$ git fetch
+$ git checkout isc_release
+$ cd /playbooks
 ```
 
 ## Provisioning
@@ -72,15 +108,19 @@ Provisioning a new server need only happen once. Re-running the play will
 destroy the existing instance and replace it:
 
 ```
-$ ansible-playbook -i "localhost," isc/aws_monolith.yml
+$ ansible-playbook -i local isc/aws_monolith.yml
 ```
+
+This will use the `local` inventory file, which ensures that the only host you
+adress to begin with is localhost. The inventory will also ensure that you
+connect to it directly, rather than via ssh.
 
 If you wish to set up a second instance without destroying the current
 instance, you may do so by providing an alternative value for
 `instance_name_tag`:
 
 ```
-$ ansible-playbook -i "localhost," isc/aws_monolith.yml -e "instance_name_tag=some_other_name"
+$ ansible-playbook -i local isc/aws_monolith.yml -e "instance_name_tag=some_other_name"
 ```
 
 The default value for `instance_name_tag` is "isc_staging"
@@ -106,17 +146,59 @@ to the `-e` argument when calling the `aws_monolith.yml` playbook:
 Variable | Required | Default | Purpose
 :--- | :--- | :--- | :---
 region | **yes** | us-west-2 | determines which aws region should be used
-zone | no | NONE | determines which aws availability zone should be used
-elb | no | NONE | provide an elb id if this instance needs to be removed from an ELB
-keypair | **yes** | pk-cpe | provide the name of a keypair tied to the region above
-security_group | **yes** | vpc-ssh-access | provide the name if a security group tied to the region above
+zone | **yes** | us-west-2a | determines the availability zone used within the designated region
 instance_type | **yes** | m3.medium | a minimum of an m3.medium is recommended by EdX
-ami | **yes** | ami-cfa1e6ff | pick an ami available in the region above.  It must be Ubuntu precise 64-bit
-vpc_subnet_id | **yes** | subnet-29b9a46f | must be the id of a VPC subnet within the network of the AWS account used
-root_ebs_size | **yes** | 50 | A minimum of 20GB is recommended by Edx, 50GB is recommended
-instance_profile_name | no | NONE | Name of the IAM instance profile to use
+security_group | **yes** | default | must be a security group available in the designated region
+keypair | **yes** | pk-isclc | must be a keypair available in the designated region
+ami | **yes** | ami-cfa1e6ff | must be an AMI for an Ubuntu precise 64-bit OS available in the designated region
+vpc_subnet_id | **yes** | subnet-ed03fa9a | must be a VPC subnet associated with the designated availability zone
+root_ebs_size | **yes** | 50 | A minimum of 20GB is recommended by EdX, 50GB is recommended
 terminate_instance | no | true | if false, then no instances will be terminated
+assign_public_ip | no | true | if false, no public IP address will be assigned
+elb | no | | designate the ELB in which instances to be terminated are located. The instances will be removed from the ELB
+instance_profile_name | no | | the IAM user profile to use.  This should be automatically detected by the security credentials provided, but is available in case
+aws_access_key | no | | a manual override for the access key id credential to use with `boto`
+aws_secret_key | no | | a manual override for the secret key credential to use with `boto`
 
+### A few words on configuration options
+
+Extra options may be passed to ansible during the run of a playbook using the
+`-e` flag as shown above. The format of the value passed to this flag is always
+a single string containing one or more space-separated `key=value` pairs:
+
+```
+$ ansible-playbook playbook.yml -e "key1=val1 key2=val2 ... keyN=valN"
+```
+
+The `security_group` selected must *at least* allow access to the server on
+ports 22 (ssh), 80 (http), and 443 (https). This will allow access to the EdX
+LMS and to managing the server via ssh login. To access the EdX studio
+functions, ports 18010 (http) and 48010 (https) need to be opened.
+
+The `keypair` selected must be available to your local ssh agent in order for
+tasks on the provisioned server to be completed. This can be accomplished in
+one of two ways.  You can pass the path to the private key on your local
+machine using the `--private-key` option to ansible-playbook. Alternatively,
+you can add the key to your ssh agent as follows:
+
+```
+$ ssh-add /path/to/keypair.pem
+```
+
+This will make the key available to your ssh agent so that when it is
+evaluating possible keys for connection, it can try this one as well. Remember
+that for ssh private keys to be read, they must be readable only by the user
+running ssh (you):
+
+```
+$ ls -l /path/to/keypair.pem
+-r--------@ 1 user  group    1692 Jan 12  2014 keypair.pem
+```
+If this is not the case, you must fix it with the `chmod` command:
+
+```
+$ chmod 400 /path/to/keypair.pem
+```
 
 ## Deployment
 
@@ -182,9 +264,10 @@ Let's take a quick look at the vars and values used in the above command:
 3. `edx_platform_repo=https://github.com/jazkarta/edx-platform.git`:
    sets the url for the repository for the edx source code.
 4. `edx_platform_version=isc`: determines the tag or branch of the source repository to use
-5. `COMMON_ENABLE_BASIC_AUTH=True`: enable basic auth to protect all sites.
-6. `COMMON_HTPASSWD_USER=name`: provide the username for basic auth (this defaults to `isc`)
-7. `COMMON_HTPASSWD_PASS=pwd`: provide the password for basic auth (this defaults to `edx`)
+5. `NGINX_ENABLE_SSL=True`: enable ssl for the nginx http server
+6. `COMMON_ENABLE_BASIC_AUTH=True`: enable basic auth to protect all sites.
+7. `COMMON_HTPASSWD_USER=name`: provide the username for basic auth (this defaults to `isc`)
+8. `COMMON_HTPASSWD_PASS=pwd`: provide the password for basic auth (this defaults to `edx`)
 
 
 Once the above command is executed, you should have a log file in your current
@@ -227,4 +310,4 @@ This command should not take more than 10-20 minutes to complete.
 
 ## Maintenance
 
-
+*documentation to come*
