@@ -6,20 +6,7 @@
 - name: Provision Instance
   hosts: localhost
   gather_facts: False
-  vars:
-    ansible_python_interpreter: /Users/cewing/virtualenvs/isc/bin/python
   roles:
     - role: launch_isc_ec2
       instance_tags: '{"Name":"{{instance_name_tag}}"}'
-      region: us-west-2
-      zone: us-west-2c
       name_tag: "{{instance_name_tag}}"
-      elb:
-      keypair: pk-cpe
-      security_group: vpc-ssh-access
-      instance_type: m3.medium
-      ami: ami-cfa1e6ff
-      vpc_subnet_id: subnet-29b9a46f
-      root_ebs_size: 50
-      instance_profile_name:
-      terminate_instance: true
