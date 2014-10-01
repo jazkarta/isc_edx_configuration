@@ -80,7 +80,7 @@ instance, you may do so by providing an alternative value for
 `instance_name_tag`:
 
 ```
-$ ansible-playbook isc/aws_monolith.yml -e "instance_name_tag=some_other_name"
+$ ansible-playbook -i "localhost," isc/aws_monolith.yml -e "instance_name_tag=some_other_name"
 ```
 
 The default value for `instance_name_tag` is "isc_staging"
@@ -105,15 +105,15 @@ to the `-e` argument when calling the `aws_monolith.yml` playbook:
 
 Variable | Required | Default | Purpose
 :--- | :--- | :--- | :---
-region | yes | us-west-2 | determines which aws region should be used
+region | **yes** | us-west-2 | determines which aws region should be used
 zone | no | NONE | determines which aws availability zone should be used
 elb | no | NONE | provide an elb id if this instance needs to be removed from an ELB
-keypair | yes | pk-cpe | provide the name of a keypair tied to the region above
-security_group | yes | vpc-ssh-access | provide the name if a security group tied to the region above
-instance_type | yes | m3.medium | a minimum of an m3.medium is recommended by EdX
-ami | yes | ami-cfa1e6ff | pick an ami available in the region above.  It must be Ubuntu precise 64-bit
-vpc_subnet_id | yes | subnet-29b9a46f | must be the id of a VPC subnet within the network of the AWS account used
-root_ebs_size | yes | 50 | A minimum of 20GB is recommended by Edx, 50GB is recommended
+keypair | **yes** | pk-cpe | provide the name of a keypair tied to the region above
+security_group | **yes** | vpc-ssh-access | provide the name if a security group tied to the region above
+instance_type | **yes** | m3.medium | a minimum of an m3.medium is recommended by EdX
+ami | **yes** | ami-cfa1e6ff | pick an ami available in the region above.  It must be Ubuntu precise 64-bit
+vpc_subnet_id | **yes** | subnet-29b9a46f | must be the id of a VPC subnet within the network of the AWS account used
+root_ebs_size | **yes** | 50 | A minimum of 20GB is recommended by Edx, 50GB is recommended
 instance_profile_name | no | NONE | Name of the IAM instance profile to use
 terminate_instance | no | true | if false, then no instances will be terminated
 
