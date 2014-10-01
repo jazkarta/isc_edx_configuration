@@ -72,7 +72,7 @@ Provisioning a new server need only happen once. Re-running the play will
 destroy the existing instance and replace it:
 
 ```
-$ ansible-playbook isc/aws_monolith.yml
+$ ansible-playbook -i "localhost," isc/aws_monolith.yml
 ```
 
 If you wish to set up a second instance without destroying the current
