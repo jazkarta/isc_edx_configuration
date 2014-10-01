@@ -2,7 +2,7 @@
 # prepares a fresh ec2 ubuntu 12.04 instance for EdX installation
 
 - name: Update apt-get package list
-  apt: update_cache=yes, cache_valid_time=86400
+  apt: update_cache=yes cache_valid_time=86400
   ignore_errors: yes
 
 - name: Upgrade apt-get
