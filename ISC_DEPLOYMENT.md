@@ -99,7 +99,7 @@ branch and then move into the playbooks directory:
 $ cd isc_edx_configuration
 $ git fetch
 $ git checkout isc_release
-$ cd /playbooks
+$ cd playbooks
 ```
 
 ## Provisioning
