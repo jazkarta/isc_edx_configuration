@@ -14,7 +14,7 @@ the AWS management modules defined in that package.  Those modules depend on
 resources. You will need to install both packages and their dependencies:
 
 ```
-$ sudo pip install paramiko PyYAML jinja2 httplib2 ansible boto
+$ sudo pip install paramiko PyYAML jinja2 httplib2 ansible boto markupsafe
 ```
 
 Although it may be possible to work with both packages installed in a
