@@ -8,7 +8,7 @@ keypair: pk-isclc
 ami: ami-cfa1e6ff # ubuntu precise 64-bit from alestic in us-west-2
 vpc_subnet_id: subnet-ed03fa9a
 root_ebs_size: 50
-terminate_instance: true
+terminate_instance: false
 assign_public_ip: true
 elb:
 instance_profile_name:

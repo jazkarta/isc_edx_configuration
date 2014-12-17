@@ -153,7 +153,7 @@ keypair | **yes** | pk-isclc | must be a keypair available in the designated reg
 ami | **yes** | ami-cfa1e6ff | must be an AMI for an Ubuntu precise 64-bit OS available in the designated region
 vpc_subnet_id | **yes** | subnet-ed03fa9a | must be a VPC subnet associated with the designated availability zone
 root_ebs_size | **yes** | 50 | A minimum of 20GB is recommended by EdX, 50GB is recommended
-terminate_instance | no | true | if false, then no instances will be terminated
+terminate_instance | no | false | if false, then no instances will be terminated
 assign_public_ip | no | true | if false, no public IP address will be assigned
 elb | no | | designate the ELB in which instances to be terminated are located. The instances will be removed from the ELB
 instance_profile_name | no | | the IAM user profile to use.  This should be automatically detected by the security credentials provided, but is available in case
