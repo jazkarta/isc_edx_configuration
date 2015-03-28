@@ -7,7 +7,6 @@
     openid_workaround: true
     devstack: true
     disable_edx_services: true
-    edx_platform_version: 'master'
     mongo_enable_journal: false
     EDXAPP_NO_PREREQ_INSTALL: 0
     COMMON_MOTD_TEMPLATE: 'devstack_motd.tail.j2'
@@ -23,6 +22,8 @@
     - oraclejdk
     - elasticsearch
     - forum
+    - role: notifier
+      NOTIFIER_DIGEST_TASK_INTERVAL: "5"
     - role: ora
       when: ENABLE_LEGACY_ORA
     - browsers

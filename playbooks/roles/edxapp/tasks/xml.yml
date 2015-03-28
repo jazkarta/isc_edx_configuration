@@ -1,3 +1,17 @@
+- name: remove all course data before checkout
+  file:
+    path="{{ edxapp_course_data_dir }}/{{ item.repo_name }}"
+    state=absent
+  with_items: EDXAPP_XML_COURSES
+
+- name: make the course data updatable by the edxapp user
+  file:
+    path="{{ edxapp_course_data_dir }}"
+    state=directory
+    recurse=yes
+    owner="{{ edxapp_user }}"
+    group="{{ edxapp_user }}"
+
 - name: clone the xml course repo
   git: >
     repo="{{ item.repo_url }}"
